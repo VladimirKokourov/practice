@@ -32,30 +32,18 @@ public class Main {
         System.out.println("end");
     }
 
-
-
-    public void checkArr(String[][] arr) {
-        try {
-            System.out.println(sum(arr));
-        } catch (MyArraySizeException e) {
-            e.printStackTrace();
-            System.out.println("size " + e.getSize());
-        } catch (MyArrayDataException e) {
-            e.printStackTrace();
-            System.out.println(e.getRow() + " " + e.getCol());
-            System.out.println(arr[e.getRow()][e.getCol()]);
-        }
-    }
-
-    static int sum(String[][] arr) throws MyArrayDataException, MyArraySizeException {
+    static int sum(String[][] arr) {
         if (arr.length != SIZE) {
             throw new MyArraySizeException("size " + arr.length, arr.length);
         }
+
         int sum = 0;
         for (int i = 0; i < arr.length; i++) {
+
             if (arr[i].length != SIZE) {
                 throw new MyArraySizeException("size " + arr[i].length, arr[i].length);
             }
+
             for (int j = 0; j < arr[i].length; j++) {
                 try {
                     sum += Integer.parseInt(arr[i][j]);
@@ -65,5 +53,19 @@ public class Main {
             }
         }
         return sum;
+    }
+
+    public void checkArr(String[][] arr) {
+        try {
+            System.out.println(sum(arr));
+            System.out.println("ssss");
+        } catch (MyArraySizeException e) {
+            e.printStackTrace();
+            System.out.println("size " + e.getSize());
+        } catch (MyArrayDataException e) {
+            e.printStackTrace();
+            System.out.println(e.getRow() + " " + e.getCol());
+            System.out.println(arr[e.getRow()][e.getCol()]);
+        }
     }
 }

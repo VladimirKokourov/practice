@@ -1,6 +1,6 @@
 package ru.vladimirkokourov.exceptions;
 
-public class MyArraySizeException extends ArrayIndexOutOfBoundsException {
+public class MyArraySizeException extends RuntimeException {
 
     private final int size;
 

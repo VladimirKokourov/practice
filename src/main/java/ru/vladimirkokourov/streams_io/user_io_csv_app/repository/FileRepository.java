@@ -1,7 +1,7 @@
 package ru.vladimirkokourov.streams_io.user_io_csv_app.repository;
 
+import ru.vladimirkokourov.streams_io.user_io_csv_app.mapper.UserMapper;
 import ru.vladimirkokourov.streams_io.user_io_csv_app.model.User;
-import ru.vladimirkokourov.streams_io.user_io_csv_app.utils.Mapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,31 +9,27 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class UserRepository {
+public class FileRepository  {
 
-    private static final String PATH = "user.csv";
     private static final String HEADER = "Id,Name,Age";
 
     private final File file;
+    private final UserMapper userMapper;
 
-    public UserRepository() {
-        this.file = new File(PATH);
+    public FileRepository(File file, UserMapper userMapper) {
+        this.file = file;
+        this.userMapper = userMapper;
         try {
-            if (file.exists()) {
-                Files.delete(file.toPath());
-            }
-            if ((file.createNewFile())) {
-                System.out.println("File created");
-            }
             Files.writeString(file.toPath(), HEADER, Charset.defaultCharset());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     private void saveAll(List<User> userList) {
-        String result = HEADER + Mapper.toString(userList);
+        String result = HEADER + userMapper.toString(userList);
         try {
             Files.writeString(file.toPath(), result, Charset.defaultCharset());
         } catch (IOException e) {
@@ -42,10 +38,6 @@ public class UserRepository {
     }
 
     public User save(User user) {
-        if (user == null) {
-            throw new NullPointerException("User is null");
-        }
-
         List<String> stringList = new ArrayList<>();
         try {
             stringList = Files.readAllLines(file.toPath(), Charset.defaultCharset());
@@ -54,7 +46,7 @@ public class UserRepository {
         }
 
         stringList.remove(0);
-        List<User> userList = Mapper.toUserList(stringList);
+        List<User> userList = userMapper.toUserList(stringList);
         userList.add(user);
         saveAll(userList);
 
@@ -69,17 +61,18 @@ public class UserRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Mapper.toUserList(list);
+        return userMapper.toUserList(list);
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
         List<User> userList = findAll();
+
         for (User user : userList) {
             if (user.getId() == id) {
-                return new User(user.getId(), user.getName(), user.getAge());
+                return Optional.of(new User(user.getId(), user.getName(), user.getAge()));
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public boolean deleteById(int id) {

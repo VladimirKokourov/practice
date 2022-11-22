@@ -2,6 +2,7 @@ package ru.vladimirkokourov.generics.task2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Box<T extends Fruit> {
@@ -13,23 +14,26 @@ public class Box<T extends Fruit> {
     }
 
     private List<T> getFruits() {
-        return fruits;
+        return Collections.unmodifiableList(fruits);
     }
 
     public double getWeight() {
-        return fruits.stream().mapToDouble(Fruit::getWeight).sum();
+        return fruits.stream()
+                .mapToDouble(Fruit::getWeight)
+                .sum();
     }
 
     public void put(T fruit) {
         fruits.add(fruit);
     }
 
+    //var args
     public void put(T... fruit) {
         fruits.addAll(Arrays.asList(fruit));
     }
 
     public void putAll(Box<T> box) {
-        fruits.addAll(box.getFruits());
+        this.fruits.addAll(box.getFruits());
         box.fruits.clear();
     }
 
