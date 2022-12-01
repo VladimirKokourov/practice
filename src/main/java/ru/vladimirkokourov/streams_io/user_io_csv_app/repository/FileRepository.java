@@ -24,7 +24,7 @@ public class FileRepository  {
         try {
             Files.writeString(file.toPath(), HEADER, Charset.defaultCharset());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -55,6 +55,7 @@ public class FileRepository  {
 
     public List<User> findAll() {
         List<String> list = new ArrayList<>();
+
         try {
             list = Files.readAllLines(file.toPath(), Charset.defaultCharset());
             list.remove(0);

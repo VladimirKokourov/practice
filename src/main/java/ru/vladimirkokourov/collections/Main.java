@@ -26,7 +26,7 @@ public class Main {
 //         ����� �������� �� �������. ������� ������, ��� ��� ����� �������� ����� ���� ��������� ��������� (� ������
 //         �������������), ����� ��� ������� ����� ������� ������ ���������� ��� ��������.
 
-        findFrequences(words);
+        findFrequencies(words);
 
         Phone phBook = new Phone();
         phBook.add("2", "89456523132");
@@ -45,7 +45,7 @@ public class Main {
     //n - words.length
     //O(n) time
     //O(n) space
-    public static Map<String, Integer> findFrequences(String[] words) {
+    public static Map<String, Integer> findFrequencies(String[] words) {
         HashMap<String, Integer> hashMap = new HashMap<>();
 
         for (String x : words) {
