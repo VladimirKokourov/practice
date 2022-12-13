@@ -1,23 +1,27 @@
 package ru.vladimirkokourov.weather_app.service;
 
+import lombok.RequiredArgsConstructor;
 import ru.vladimirkokourov.weather_app.client.AccuWeatherClient;
-import ru.vladimirkokourov.weather_app.mapper.Mapper;
+import ru.vladimirkokourov.weather_app.model.api.city.CityRoot;
+import ru.vladimirkokourov.weather_app.model.api.enums.TopCityCount;
 
-import java.io.IOException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
 
     private final AccuWeatherClient accuWeatherClient;
-    private final Mapper mapper;
 
-    public CityServiceImpl(AccuWeatherClient accuWeatherClient, Mapper mapper) {
-        this.accuWeatherClient = accuWeatherClient;
-        this.mapper = mapper;
-    }
+    private String example;
 
     @Override
-    public Map<String, Integer> getCityMap(int amount) throws IOException {
-        return mapper.toMap(accuWeatherClient.getTopCitiesJSON(amount));
+    public Map<String, Integer> getCityMap(final TopCityCount topCityCount) {
+        var topCities = accuWeatherClient.getTopCities(topCityCount);
+
+        return topCities.stream()
+                .collect(Collectors.toMap(CityRoot::getName, CityRoot::getKey));
+
     }
+
 }

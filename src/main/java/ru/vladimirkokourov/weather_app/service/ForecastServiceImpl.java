@@ -1,23 +1,16 @@
 package ru.vladimirkokourov.weather_app.service;
 
+import lombok.RequiredArgsConstructor;
 import ru.vladimirkokourov.weather_app.client.AccuWeatherClient;
-import ru.vladimirkokourov.weather_app.mapper.Mapper;
-import ru.vladimirkokourov.weather_app.model.Forecast;
+import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecastRoot;
 
-import java.io.IOException;
-
+@RequiredArgsConstructor
 public class ForecastServiceImpl implements ForecastService {
 
     private final AccuWeatherClient accuWeatherClient;
-    private final Mapper mapper;
-
-    public ForecastServiceImpl(AccuWeatherClient accuWeatherClient, Mapper mapper) {
-        this.accuWeatherClient = accuWeatherClient;
-        this.mapper = mapper;
-    }
 
     @Override
-    public Forecast getByKey(int key) throws IOException {
-        return mapper.toForecast(accuWeatherClient.getForecastJSON(key));
+    public DailyForecastRoot getByKey(int locationKey) {
+        return accuWeatherClient.get1DayForecast(locationKey);
     }
 }

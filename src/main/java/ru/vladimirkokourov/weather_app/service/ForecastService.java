@@ -1,11 +1,9 @@
 package ru.vladimirkokourov.weather_app.service;
 
-import ru.vladimirkokourov.weather_app.model.Forecast;
-
-import java.io.IOException;
+import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecastRoot;
 
 public interface ForecastService {
 
-    Forecast getByKey(int key) throws IOException;
+    DailyForecastRoot getByKey(int locationKey);
 
 }
