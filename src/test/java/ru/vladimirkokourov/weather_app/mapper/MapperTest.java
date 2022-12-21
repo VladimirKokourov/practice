@@ -8,12 +8,8 @@ import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecast;
 import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecastRoot;
 import ru.vladimirkokourov.weather_app.model.api.onedayforecast.Maximum;
 import ru.vladimirkokourov.weather_app.model.api.onedayforecast.Minimum;
-import ru.vladimirkokourov.weather_app.model.dto.CityDTO;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MapperTest {
 
