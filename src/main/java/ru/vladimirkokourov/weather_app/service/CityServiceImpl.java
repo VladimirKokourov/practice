@@ -21,7 +21,5 @@ public class CityServiceImpl implements CityService {
 
         return topCities.stream()
                 .collect(Collectors.toMap(CityRoot::getName, CityRoot::getKey));
-
     }
-
 }

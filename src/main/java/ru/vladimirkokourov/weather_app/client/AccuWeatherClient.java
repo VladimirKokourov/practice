@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import ru.vladimirkokourov.weather_app.mapper.Mapper;
 import ru.vladimirkokourov.weather_app.model.api.city.CityRoot;
+import ru.vladimirkokourov.weather_app.model.api.currentcondition.CurrentConditionRoot;
 import ru.vladimirkokourov.weather_app.model.api.enums.TopCityCount;
 import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecastRoot;
 import ru.vladimirkokourov.weather_app.support.Constants;
@@ -33,6 +35,7 @@ public class AccuWeatherClient {
 
     public List<CityRoot> getTopCities(TopCityCount topCityCount) {
         var httpUrl = new HttpUrl.Builder()
+                .scheme("http")
                 .host(Constants.ACCUWEATHER_HOST)
                 .addPathSegment("currentconditions")
                 .addPathSegment("v1")
@@ -41,12 +44,12 @@ public class AccuWeatherClient {
                 .addQueryParameter("apikey", apikey)
                 .build();
 
-
         return call(httpUrl, cityRootListTypeReference);
     }
 
     public DailyForecastRoot get1DayForecast(int locationKey) {
         var httpUrl = new HttpUrl.Builder()
+                .scheme("http")
                 .host(Constants.ACCUWEATHER_HOST)
                 .addPathSegment("forecasts")
                 .addPathSegment("v1")
@@ -56,7 +59,41 @@ public class AccuWeatherClient {
                 .addQueryParameter("apikey", apikey)
                 .build();
 
-        return call(httpUrl, dailyForecastRootTypeReference);
+        var request = new Request.Builder()
+                .url(httpUrl)
+                .build();
+
+        try (var responseBody = client.newCall(request).execute().body()) {
+            var json = responseBody.string();
+            return objectMapper.readValue(json, DailyForecastRoot.class);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CurrentConditionRoot getCurrentCondition(int locationKey) {
+        var httpUrl = new HttpUrl.Builder()
+                .scheme("http")
+                .host(Constants.ACCUWEATHER_HOST)
+                .addPathSegment("currentconditions")
+                .addPathSegment("v1")
+                .addPathSegment(String.valueOf(locationKey))
+                .addQueryParameter("apikey", apikey)
+                .build();
+
+        var request = new Request.Builder()
+                .url(httpUrl)
+                .build();
+
+        try (var responseBody = client.newCall(request).execute().body()) {
+            var json = responseBody.string();
+            CurrentConditionRoot[] arr = objectMapper.readValue(json, CurrentConditionRoot[].class);
+            return arr[0];
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     private <T> T call(HttpUrl httpUrl, TypeReference<T> tTypeReference) {

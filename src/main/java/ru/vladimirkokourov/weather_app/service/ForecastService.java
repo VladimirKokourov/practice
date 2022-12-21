@@ -4,6 +4,6 @@ import ru.vladimirkokourov.weather_app.model.api.onedayforecast.DailyForecastRoo
 
 public interface ForecastService {
 
-    DailyForecastRoot getByKey(int locationKey);
+    DailyForecastRoot getByKey(final int locationKey);
 
 }

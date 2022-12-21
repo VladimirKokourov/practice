@@ -1,25 +1,33 @@
 package ru.vladimirkokourov.weather_app.model.api.onedayforecast;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DailyForecast{
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@Setter
+@ToString
+public class DailyForecast {
     @JsonProperty("Date")
-    public Date date;
+    private Date date;
     @JsonProperty("EpochDate")
-    public int epochDate;
+    private int epochDate;
     @JsonProperty("Temperature")
-    public Temperature temperature;
+    private Temperature temperature;
     @JsonProperty("Day")
-    public Day day;
+    private Day day;
     @JsonProperty("Night")
-    public Night night;
+    private Night night;
     @JsonProperty("Sources")
-    public ArrayList<String> sources;
+    private ArrayList<String> sources;
     @JsonProperty("MobileLink")
-    public String mobileLink;
+    private String mobileLink;
     @JsonProperty("Link")
-    public String link;
+    private String link;
 }

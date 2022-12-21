@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface CityService {
 
-    Map<String,Integer> getCityMap(TopCityCount topCityCount);
+    Map<String,Integer> getCityMap(final TopCityCount topCityCount);
 
 }

@@ -10,7 +10,7 @@ public class ForecastServiceImpl implements ForecastService {
     private final AccuWeatherClient accuWeatherClient;
 
     @Override
-    public DailyForecastRoot getByKey(int locationKey) {
+    public DailyForecastRoot getByKey(final int locationKey) {
         return accuWeatherClient.get1DayForecast(locationKey);
     }
 }

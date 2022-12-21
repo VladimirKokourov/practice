@@ -17,5 +17,4 @@ public class DailyForecastRoot {
     private Headline headline;
     @JsonProperty("DailyForecasts")
     private ArrayList<DailyForecast> dailyForecasts;
-
 }
